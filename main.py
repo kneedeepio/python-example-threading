@@ -42,20 +42,19 @@ def main():
     # Run the threads
     logging.debug("Starting the threads.")
     wrapper = ThreadWrapper(work_queue, other_data, NUM_THREADS, CustomThread)
-    wrapper.start()
+    wrapper.start_threads()
 
     # Idle while the threads are working.  Could do other work here.
-    while wrapper.any_alive():
+    while wrapper.any_threads_alive():
         try:
             time.sleep(0.1)
         except KeyboardInterrupt:
             logging.warning("KeyboardInterrupt, stopping threads")
-            wrapper.stop()
+            wrapper.stop_threads()
 
     # Wait for the threads to finish
     logging.debug("Waiting for threads to finish.")
-    wrapper.join()
-
+    wrapper.join_threads()
     logging.debug("Threads have completed.")
 
 if __name__ == "__main__":
